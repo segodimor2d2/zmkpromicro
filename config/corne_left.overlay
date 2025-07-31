@@ -1,7 +1,10 @@
 / {
     chosen {
-        zephyr,console = &uart0;  /* Se quiser console via UART física */
-        /* zephyr,console = &cdc_acm_uart0;  // para console via USB CDC ACM */
+        /* Se quiser console via UART física  */
+        /* zephyr,console = &uart0; */
+
+        /* para console via USB CDC ACM */
+        zephyr,console = &cdc_acm_uart0;
     };
 };
 

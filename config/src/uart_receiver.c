@@ -1,14 +1,14 @@
-#error "Verificando se uart_receiver.c está sendo compilado!"
-
 #include <zephyr/kernel.h>
 #include <zephyr/device.h>
 #include <zephyr/drivers/gpio.h>
 #include <zephyr/drivers/uart.h>
-#include <zephyr/init.h>  // <- necessário para SYS_INIT()
+#include <zephyr/init.h>  // necessário para SYS_INIT()
+#include <zephyr/sys/printk.h>  // para printk
 
 #define LED_NODE DT_ALIAS(led0)
 static const struct gpio_dt_spec led = GPIO_DT_SPEC_GET(LED_NODE, gpios);
-const struct device *uart = DEVICE_DT_GET(DT_NODELABEL(uart0));
+
+static const struct device *uart = DEVICE_DT_GET(DT_NODELABEL(uart0));
 
 static struct k_sem uart_data_sem;
 
@@ -30,16 +30,23 @@ static void uart_cb(const struct device *dev, void *user_data)
     uint8_t c;
 
     while (uart_fifo_read(dev, &c, 1) > 0) {
+        printk("UART received: '%c' (0x%02x)\n", c, c);
         k_sem_give(&uart_data_sem);
     }
 }
 
 void uart_receiver_init(void)
 {
-    if (!device_is_ready(led.port)) return;
+    if (!device_is_ready(led.port)) {
+        printk("LED device not ready\n");
+        return;
+    }
     gpio_pin_configure_dt(&led, GPIO_OUTPUT_INACTIVE);
 
-    if (!device_is_ready(uart)) return;
+    if (!device_is_ready(uart)) {
+        printk("UART device not ready\n");
+        return;
+    }
 
     k_sem_init(&uart_data_sem, 0, 1);
 
@@ -51,13 +58,11 @@ void uart_receiver_init(void)
                     7, 0, K_NO_WAIT);
 }
 
-// Wrapper para SYS_INIT
-static int uart_receiver_sys_init(const struct device *dev)
+
+static int uart_receiver_sys_init(void)
 {
-    ARG_UNUSED(dev);
     uart_receiver_init();
     return 0;
 }
 
-// Chama a função acima na inicialização do sistema
 SYS_INIT(uart_receiver_sys_init, APPLICATION, CONFIG_APPLICATION_INIT_PRIORITY);

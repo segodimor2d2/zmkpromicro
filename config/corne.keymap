@@ -9,18 +9,6 @@
 #include <dt-bindings/zmk/bt.h>
 
 / {
-    keymap {
-        compatible = "zmk,keymap";
-        default_layer {
-            bindings = <
-                &uart_trigger  // Se quiser mapear uma tecla física para testar
-                &kp A
-            >;
-        };
-    };
-};
-
-/ {
         keymap {
                 compatible = "zmk,keymap";
 

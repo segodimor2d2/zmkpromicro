@@ -1,13 +1,3 @@
-/ {
-    chosen {
-        /* Se quiser console via UART física  */
-        zephyr,console = &uart0;
-
-        /* para console via USB CDC ACM */
-        /* zephyr,console = &cdc_acm_uart0; */
-    };
-};
-
 &pinctrl {
     uart0_default: uart0_default {
         group1 {
@@ -32,16 +22,6 @@
     pinctrl-1 = <&uart0_sleep>;
     pinctrl-names = "default", "sleep";
 };
-
-&usbd {
-    status = "okay";
-
-    cdc_acm_uart0: cdc_acm_uart0 {
-        compatible = "zephyr,cdc-acm-uart";
-        label = "CDC_ACM_0";
-    };
-};
-
 
 / {
     leds {

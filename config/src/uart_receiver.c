@@ -11,8 +11,8 @@ static const struct gpio_dt_spec led = GPIO_DT_SPEC_GET(LED_NODE, gpios);
 
 static const struct device *uart = DEVICE_DT_GET(DT_NODELABEL(uart0));
 
-// Pacote UART: [0xAA][event_type][row][col]
-static uint8_t buf[4];
+// Pacote UART: [0xAA][event_type][row][col][checksum]
+static uint8_t buf[5];
 static int buf_pos = 0;
 
 // Estrutura para armazenar evento UART
@@ -41,7 +41,7 @@ void led_blink_thread(void *a, void *b, void *c)
         bool pressed = event.event_type == 0x01;
 
         printk("UART: %s (%d,%d)\n", pressed ? "Press" : "Release", event.row, event.col);
-        printk("Pacote UART recebido: 0xAA 0x%02X 0x%02X 0x%02X\n",
+        printk("Pacote UART recebido: 0xAA 0x%02X 0x%02X 0x%02X (Checksum OK)\n",
                event.event_type, event.row, event.col);
 
         int ret = uart_switch_simulate(event.row, event.col, pressed);
@@ -68,19 +68,31 @@ static void uart_cb(const struct device *dev, void *user_data)
 
         buf[buf_pos++] = c;
 
-        if (buf_pos == 4) {
-            struct uart_event_t event = {
-                .event_type = buf[1],
-                .row = buf[2],
-                .col = buf[3]
-            };
+        if (buf_pos == 5) {
+            uint8_t event_type = buf[1];
+            uint8_t row = buf[2];
+            uint8_t col = buf[3];
+            uint8_t checksum = buf[4];
+            uint8_t expected_checksum = event_type ^ row ^ col;
 
-            // Envia o evento para a fila
-            if (k_msgq_put(&uart_event_msgq, &event, K_NO_WAIT) != 0) {
-                printk("Fila cheia! Evento (%d,%d) perdido.\n", event.row, event.col);
+            if (checksum != expected_checksum) {
+                printk("Checksum inválido! Recebido: 0x%02X, Esperado: 0x%02X\n", checksum, expected_checksum);
+                buf_pos = 0;
+                continue;  // descarta pacote
             }
 
-            buf_pos = 0; // Reinicia buffer
+            struct uart_event_t event = {
+                .event_type = event_type,
+                .row = row,
+                .col = col
+            };
+
+            // Envia para a fila
+            if (k_msgq_put(&uart_event_msgq, &event, K_NO_WAIT) != 0) {
+                printk("Fila cheia! Evento (%d,%d) perdido.\n", row, col);
+            }
+
+            buf_pos = 0; // Reinicia buffer para o próximo pacote
         }
     }
 }

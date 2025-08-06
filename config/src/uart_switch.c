@@ -2,15 +2,14 @@
 #include <zephyr/logging/log.h>
 #include <zmk/keymap.h>
 #include <zmk/behavior.h>
-
-#include <zmk/fake_switch.h>
+#include <zmk/uart_switch.h>
 
 LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
 
 // Use com cautela: verifique se (row << 8 | col) corresponde ao índice da matriz keymap
 #define ZMK_KEYMAP_POSITION(row, col) (((uint32_t)(row) << 8) | (col))
 
-int fake_switch_simulate(uint8_t row, uint8_t col, bool pressed) {
+int uart_switch_simulate(uint8_t row, uint8_t col, bool pressed) {
     uint8_t layer = 0;
     uint32_t position = ZMK_KEYMAP_POSITION(row, col);
 
@@ -28,6 +27,6 @@ int fake_switch_simulate(uint8_t row, uint8_t col, bool pressed) {
     };
 
     int ret = zmk_behavior_invoke_binding(binding, event, pressed);
-    LOG_DBG("fake_switch %s at (%d,%d): %d", pressed ? "press" : "release", row, col, ret);
+    LOG_DBG("uart_switch %s at (%d,%d): %d", pressed ? "press" : "release", row, col, ret);
     return ret;
 }

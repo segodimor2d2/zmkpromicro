@@ -4,7 +4,7 @@
 #include <zephyr/drivers/uart.h>
 #include <zephyr/init.h>
 #include <zephyr/sys/printk.h>
-#include <zmk/fake_switch.h> // <-- Simula teclas via row/col
+#include <zmk/uart_switch.h>
 
 #define LED_NODE DT_ALIAS(led0)
 static const struct gpio_dt_spec led = GPIO_DT_SPEC_GET(LED_NODE, gpios);
@@ -53,8 +53,8 @@ static void uart_cb(const struct device *dev, void *user_data)
             printk("Pacote UART recebido: 0x%02X 0x%02X 0x%02X 0x%02X\n",
                    buf[0], buf[1], buf[2], buf[3]);
 
-            // Executa o switch fake
-            int ret = fake_switch_simulate(row, col, pressed);
+            // Executa o switch uart
+            int ret = uart_switch_simulate(row, col, pressed);
             if (ret < 0) {
                 printk("Erro ao simular tecla (%d,%d)\n", row, col);
             }

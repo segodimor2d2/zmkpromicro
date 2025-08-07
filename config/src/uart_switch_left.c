@@ -2,7 +2,7 @@
 #include <zephyr/logging/log.h>
 #include <zmk/keymap.h>
 #include <zmk/behavior.h>
-#include <zmk/uart_switch.h>
+#include <zmk/uart_switch_left.h>
 
 LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
 
@@ -12,7 +12,7 @@ LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
 // Calcula o índice linear a partir de (row, col)
 #define ZMK_KEYMAP_POSITION(row, col) ((row) * MATRIX_COLS + (col))
 
-int uart_switch_simulate(uint8_t row, uint8_t col, bool pressed) {
+int uart_switch_simulate_left(uint8_t row, uint8_t col, bool pressed) {
     uint8_t layer = 0;
 
     // Segurança: evita acessar posições inválidas

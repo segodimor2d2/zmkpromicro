@@ -4,8 +4,9 @@
 #include <zephyr/drivers/uart.h>
 #include <zephyr/init.h>
 #include <zephyr/sys/printk.h>
-#include <zmk/uart_switch.h>
+#include <zmk/uart_switch_right.h>
 
+// #error "!!!!VERIFICANDO SE ESTÁ SENDO COMPILADO!!!!"
 #define LED_NODE DT_ALIAS(led0)
 static const struct gpio_dt_spec led = GPIO_DT_SPEC_GET(LED_NODE, gpios);
 
@@ -43,7 +44,7 @@ void led_blink_thread(void *a, void *b, void *c)
         printk("UART: %s (%d,%d)\n", pressed ? "Press" : "Release", event.row, event.col);
         printk("Pacote UART recebido: 0xAA 0x%02X 0x%02X 0x%02X (Checksum OK)\n", event.event_type, event.row, event.col);
 
-        int ret = uart_switch_simulate(event.row, event.col, pressed);
+        int ret = uart_switch_simulate_right(event.row, event.col, pressed);
         if (ret < 0) {
             printk("Erro ao simular tecla (%d,%d)\n", event.row, event.col);
         }

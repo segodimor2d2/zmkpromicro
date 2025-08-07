@@ -27,22 +27,22 @@
     leds {
         compatible = "gpio-leds";
         my_led: led_0 {
-            gpios = <&gpio0 9 GPIO_ACTIVE_HIGH>;
+            gpios = <&gpio0 9 GPIO_ACTIVE_HIGH>; // mesmo pino dos dois lados
             label = "User LED";
         };
     };
 
     aliases {
-        led0 = &my_led;
+        led0 = &my_led; // importante para uart_receiver.c funcionar
     };
+
+    /* chosen { */
+    /*     zmk,run-behavior = &peripheral_behavior; // ou central_behavior para o outro lado */
+    /* }; */
+
 };
 
-/* &central_behavior { */
-/*     compatible = "zmk,behavior-split-central"; */
-/* }; */
-/**/
-/* & { */
-/*     chosen { */
-/*         zmk,run-behavior = &central_behavior; */
-/*     }; */
+
+/* &peripheral_behavior { */
+/*     compatible = "zmk,behavior-split-peripheral"; */
 /* }; */

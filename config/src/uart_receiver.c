@@ -41,8 +41,7 @@ void led_blink_thread(void *a, void *b, void *c)
         bool pressed = event.event_type == 0x01;
 
         printk("UART: %s (%d,%d)\n", pressed ? "Press" : "Release", event.row, event.col);
-        printk("Pacote UART recebido: 0xAA 0x%02X 0x%02X 0x%02X (Checksum OK)\n",
-               event.event_type, event.row, event.col);
+        printk("Pacote UART recebido: 0xAA 0x%02X 0x%02X 0x%02X (Checksum OK)\n", event.event_type, event.row, event.col);
 
         int ret = uart_switch_simulate(event.row, event.col, pressed);
         if (ret < 0) {

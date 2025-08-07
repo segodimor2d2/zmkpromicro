@@ -6,17 +6,28 @@
 
 LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
 
-// Use com cautela: verifique se (row << 8 | col) corresponde ao índice da matriz keymap
-#define ZMK_KEYMAP_POSITION(row, col) (((uint32_t)(row) << 8) | (col))
+// Defina o número de colunas da sua matriz lógica (Corne = 12 colunas)
+#define MATRIX_COLS 12
+
+// Calcula o índice linear a partir de (row, col)
+#define ZMK_KEYMAP_POSITION(row, col) ((row) * MATRIX_COLS + (col))
 
 int uart_switch_simulate(uint8_t row, uint8_t col, bool pressed) {
     uint8_t layer = 0;
+
+    // Segurança: evita acessar posições inválidas
+    // if (row >= 4 || col >= MATRIX_COLS) {
+    //     LOG_ERR("Invalid key position: row=%d, col=%d", row, col);
+    //     return -EINVAL;
+    // }
+
     uint32_t position = ZMK_KEYMAP_POSITION(row, col);
 
-    const struct zmk_behavior_binding *binding = zmk_keymap_get_layer_binding_at_idx(layer, position);
+    const struct zmk_behavior_binding *binding =
+        zmk_keymap_get_layer_binding_at_idx(layer, position);
 
     if (!binding) {
-        LOG_ERR("No binding at (%d,%d)", row, col);
+        LOG_ERR("No binding found at (%d, %d)", row, col);
         return -EINVAL;
     }
 
@@ -27,6 +38,7 @@ int uart_switch_simulate(uint8_t row, uint8_t col, bool pressed) {
     };
 
     int ret = zmk_behavior_invoke_binding(binding, event, pressed);
-    LOG_DBG("uart_switch %s at (%d,%d): %d", pressed ? "press" : "release", row, col, ret);
+    LOG_DBG("uart_switch %s at (%d, %d) => position %d, result: %d",
+            pressed ? "press" : "release", row, col, position, ret);
     return ret;
 }

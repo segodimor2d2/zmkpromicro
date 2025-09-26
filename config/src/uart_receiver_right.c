@@ -18,7 +18,7 @@ struct uart_event_t {
     uint8_t col;
 };
 
-// Fila de eventos (aumentada para evitar perdas)
+// Aumentei a fila para suportar mais eventos sem perda
 #define UART_EVENT_QUEUE_SIZE 32
 K_MSGQ_DEFINE(uart_event_msgq, sizeof(struct uart_event_t), UART_EVENT_QUEUE_SIZE, 4);
 
@@ -31,10 +31,11 @@ void uart_event_thread(void *a, void *b, void *c)
     struct uart_event_t event;
 
     while (1) {
+        // Espera por eventos na fila
         k_msgq_get(&uart_event_msgq, &event, K_FOREVER);
 
         bool pressed = event.event_type == 0x01;
-        uart_switch_simulate_right(event.row, event.col, pressed);
+       uart_switch_simulate_right(event.row, event.col, pressed);
     }
 }
 
@@ -58,7 +59,7 @@ static void uart_cb(const struct device *dev, void *user_data)
 
             if (checksum != expected_checksum) {
                 buf_pos = 0;
-                continue;
+                continue; // descarta pacote inválido
             }
 
             struct uart_event_t event = {

@@ -3,42 +3,70 @@
 #include <zephyr/drivers/uart.h>
 #include <zephyr/init.h>
 #include <zmk/uart_switch_left.h>
+#include <zmk/uart_move_mouse.h>
 
 // UART device
 static const struct device *uart = DEVICE_DT_GET(DT_NODELABEL(uart0));
 
-// Pacote UART: [0xAA][event_type][row][col][checksum]
-static uint8_t buf[5];
-static int buf_pos = 0;
+// Tipos de evento
+#define EVT_KEYBOARD 0x01
+#define EVT_MOUSE    0x02
 
-// Estrutura para armazenar evento UART
+// Estrutura de evento
 struct uart_event_t {
     uint8_t event_type;
-    uint8_t row;
-    uint8_t col;
+    union {
+        struct {
+            uint8_t row;
+            uint8_t col;
+            uint8_t pressed;
+        } key;
+        struct {
+            int8_t dx;
+            int8_t dy;
+            uint8_t buttons;
+        } mouse;
+    };
 };
 
-// Aumentei a fila para suportar mais eventos sem perda
+// Buffer de recepção
+static uint8_t buf[7];
+static int buf_pos = 0;
+static int expected_len = 0;
+
+// Fila de eventos
 #define UART_EVENT_QUEUE_SIZE 32
 K_MSGQ_DEFINE(uart_event_msgq, sizeof(struct uart_event_t), UART_EVENT_QUEUE_SIZE, 4);
 
-// Stack e thread para processar eventos UART
+// Thread para processar eventos UART
 K_THREAD_STACK_DEFINE(uart_stack, 1024);
 static struct k_thread uart_thread_data;
 
+// Processa eventos vindos da fila
 void uart_event_thread(void *a, void *b, void *c)
 {
     struct uart_event_t event;
 
     while (1) {
-        // Espera por eventos na fila
         k_msgq_get(&uart_event_msgq, &event, K_FOREVER);
 
-        bool pressed = event.event_type == 0x01;
-        uart_switch_simulate_left(event.row, event.col, pressed);
+        switch (event.event_type) {
+        case EVT_KEYBOARD:
+            uart_switch_simulate_left(
+                event.key.row,
+                event.key.col,
+                event.key.pressed ? true : false
+            );
+            break;
+
+        case EVT_MOUSE:
+            uart_mouse_move(event.mouse.dx, event.mouse.dy, event.mouse.buttons);
+            break;
+        }
     }
 }
 
+// Callback UART para montagem dos pacotes
 static void uart_cb(const struct device *dev, void *user_data)
 {
     uint8_t c;
@@ -50,26 +78,47 @@ static void uart_cb(const struct device *dev, void *user_data)
 
         buf[buf_pos++] = c;
 
-        if (buf_pos == 5) {
-            uint8_t event_type = buf[1];
-            uint8_t row = buf[2];
-            uint8_t col = buf[3];
-            uint8_t checksum = buf[4];
-            uint8_t expected_checksum = event_type ^ row ^ col;
+        // Assim que lê o tipo de evento, define o tamanho esperado
+        if (buf_pos == 2) {
+            if (buf[1] == EVT_KEYBOARD) {
+                expected_len = 6; // [AA][type][row][col][pressed][checksum]
+            } else if (buf[1] == EVT_MOUSE) {
+                expected_len = 6; // [AA][type][dx][dy][buttons][checksum]
+            } else {
+                buf_pos = 0; // tipo inválido
+                continue;
+            }
+        }
 
-            if (checksum != expected_checksum) {
-                buf_pos = 0;
-                continue; // descarta pacote inválido
+        // Se pacote completo chegou
+        if (expected_len > 0 && buf_pos == expected_len) {
+            uint8_t checksum = 0;
+            for (int i = 1; i < expected_len - 1; i++) {
+                checksum ^= buf[i];
             }
 
-            struct uart_event_t event = {
-                .event_type = event_type,
-                .row = row,
-                .col = col
-            };
+            if (checksum != buf[expected_len - 1]) {
+                buf_pos = 0;
+                expected_len = 0;
+                continue; // pacote inválido
+            }
+
+            struct uart_event_t event = { .event_type = buf[1] };
+
+            if (event.event_type == EVT_KEYBOARD) {
+                event.key.row = buf[2];
+                event.key.col = buf[3];
+                event.key.pressed = buf[4];
+            } else if (event.event_type == EVT_MOUSE) {
+                event.mouse.dx = (int8_t)buf[2];
+                event.mouse.dy = (int8_t)buf[3];
+                event.mouse.buttons = buf[4];
+            }
 
             k_msgq_put(&uart_event_msgq, &event, K_NO_WAIT);
+
             buf_pos = 0;
+            expected_len = 0;
         }
     }
 }

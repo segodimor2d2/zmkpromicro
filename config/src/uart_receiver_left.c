@@ -12,6 +12,11 @@ static const struct device *uart = DEVICE_DT_GET(DT_NODELABEL(uart0));
 #define EVT_KEYBOARD 0x01
 #define EVT_MOUSE    0x02
 
+// Buffer de recepção
+static uint8_t buf[7];
+static int buf_pos = 0;
+static int expected_len = 0;
+
 // Estrutura de evento
 struct uart_event_t {
     uint8_t event_type;
@@ -28,11 +33,6 @@ struct uart_event_t {
         } mouse;
     };
 };
-
-// Buffer de recepção
-static uint8_t buf[7];
-static int buf_pos = 0;
-static int expected_len = 0;
 
 // Fila de eventos
 #define UART_EVENT_QUEUE_SIZE 32

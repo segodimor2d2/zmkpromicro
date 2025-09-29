@@ -3,8 +3,8 @@
 #include <zephyr/device.h>
 #include <zephyr/drivers/uart.h>
 #include <zephyr/init.h>
-#include <zephyr/logging/log.h>
 #include <zmk/uart_switch_right.h>
+#include <zephyr/logging/log.h>
 
 LOG_MODULE_REGISTER(uart_receiver_right, LOG_LEVEL_INF);
 

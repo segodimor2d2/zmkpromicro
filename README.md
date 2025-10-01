@@ -8,3 +8,7 @@
 ## Vá até o final do arquivo zmk/app/CMakeLists.txt e adicione isso 
 ### Incluir código do zmk-config/src de fora do repositório
 add_subdirectory(${ZMK_CONFIG}/src ${CMAKE_CURRENT_BINARY_DIR}/zmk_config_src)
+
+
+## compilation test
+// #error "!!!!VERIFICANDO SE ESTÁ SENDO COMPILADO!!!!"

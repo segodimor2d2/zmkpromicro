@@ -3,8 +3,8 @@
 #include <zmk/event_manager.h>
 #include <zmk/keymap.h>
 #include <zmk/behavior.h>
+#include "zmk_mouse_state_changed.h"
 #include <zmk/uart_switch_left.h> // seu código de envio de keycodes
-#include <zmk/zmk_mouse_state_changed.h> 
 
 LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
 
@@ -22,7 +22,7 @@ static void send_key(uint8_t row, uint8_t col) {
 // Função para enviar a palavra "oi"
 static void send_test_message() {
     // Ajuste os valores de (row, col) de acordo com seu keymap
-    send_key(0, 9); // 'o'
+    send_key(1, 9); // 'l'
     // send_key(0, 8); // 'i'
 }
 

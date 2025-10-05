@@ -7,8 +7,8 @@
 #include <zmk/endpoints.h>
 #include <zmk/hid.h>
 #include <zmk/event_manager.h>
-#include "zmk_mouse_state_changed.h"
 #include <zmk/uart_switch_right.h>
+#include "zmk_mouse_state_changed.h"
 
 LOG_MODULE_REGISTER(uart_receiver_right, LOG_LEVEL_INF);
 
@@ -75,6 +75,8 @@ void uart_event_thread_right(void *a, void *b, void *c)
                 .scroll_x = event.mouse.scroll_x,
                 .buttons = event.mouse.buttons,
             };
+
+            ev.header.event = &zmk_event_zmk_mouse_state_changed;
             ZMK_EVENT_RAISE(ev);
             break;
         }

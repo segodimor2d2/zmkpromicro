@@ -13,14 +13,17 @@ if(CONFIG_ZMK_SPLIT_ROLE_CENTRAL)
     ${CMAKE_CURRENT_LIST_DIR}/uart_move_mouse_left.c
     ${CMAKE_CURRENT_LIST_DIR}/uart_receiver_left.c
     ${CMAKE_CURRENT_LIST_DIR}/uart_switch_left.c
-    ${CMAKE_CURRENT_LIST_DIR}/mouse_state_listener.c
-    ${CMAKE_CURRENT_LIST_DIR}/test_left.c
+    # ${CMAKE_CURRENT_LIST_DIR}/mouse_state_listener.c
+    # ${CMAKE_CURRENT_LIST_DIR}/test_left.c
+    ${CMAKE_CURRENT_LIST_DIR}/mouse_rx_listener.c
   )
 else()
   # Peripheral (lado direito)
   target_sources(app PRIVATE
     ${CMAKE_CURRENT_LIST_DIR}/uart_receiver_right.c
     ${CMAKE_CURRENT_LIST_DIR}/uart_switch_right.c
-    ${CMAKE_CURRENT_LIST_DIR}/test_right.c
+    # ${CMAKE_CURRENT_LIST_DIR}/test_right.c
+    # ${CMAKE_CURRENT_LIST_DIR}/mouse_test_sender.c
+    ${CMAKE_CURRENT_LIST_DIR}/mouse_tx_listener.c
   )
 endif()

@@ -6,7 +6,8 @@
 #include <zephyr/logging/log.h>
 #include <zmk/endpoints.h>
 #include <zmk/hid.h>
-#include <zmk/zmk_mouse_state_changed.h>
+#include <zmk/event_manager.h>
+#include "zmk_mouse_state_changed.h"
 #include <zmk/uart_switch_right.h>
 
 LOG_MODULE_REGISTER(uart_receiver_right, LOG_LEVEL_INF);
@@ -74,7 +75,7 @@ void uart_event_thread_right(void *a, void *b, void *c)
                 .scroll_x = event.mouse.scroll_x,
                 .buttons = event.mouse.buttons,
             };
-            raise_zmk_mouse_state_changed(ev);
+            ZMK_EVENT_RAISE(ev);
             break;
         }
         default:

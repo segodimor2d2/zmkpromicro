@@ -11,7 +11,6 @@ static int mouse_tx_listener(const zmk_event_t *eh) {
     if (!ev)
         return ZMK_EV_EVENT_BUBBLE;
 
-#if IS_ENABLED(CONFIG_ZMK_SPLIT_ROLE_PERIPHERAL)
     int ret = zmk_split_bt_peripheral_send((uint8_t *)ev, sizeof(*ev));
     if (ret == 0) {
         LOG_INF("Enviado via BLE Split -> dx=%d dy=%d scroll_x=%d scroll_y=%d btn=%d",
@@ -19,7 +18,7 @@ static int mouse_tx_listener(const zmk_event_t *eh) {
     } else {
         LOG_ERR("Falha ao enviar evento via split BLE (ret=%d)", ret);
     }
-#endif
+
     return ZMK_EV_EVENT_BUBBLE;
 }
 

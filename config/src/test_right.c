@@ -3,7 +3,7 @@
 #include <zmk/event_manager.h>
 #include <zmk/keymap.h>
 #include <zmk/behavior.h>
-#include <zmk/uart_switch_right.h> // seu código de envio de keycodes
+#include <zmk/uart_switch_right.h>
 #include "zmk_mouse_state_changed.h"
 
 LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
@@ -14,26 +14,37 @@ LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
 // Função auxiliar para enviar uma tecla
 static void send_key(uint8_t row, uint8_t col) {
     uart_switch_simulate_right(row, col, true);   // Press
-    k_msleep(20); // Pequena pausa para o host reconhecer a tecla
+    k_msleep(20);
     uart_switch_simulate_right(row, col, false);  // Release
     k_msleep(20);
 }
 
-// Função para enviar a palavra "oi"
-static void send_test_message() {
-    // Ajuste os valores de (row, col) de acordo com seu keymap
+static int mouse_tx_listener(const zmk_event_t *eh) {
+    const struct zmk_mouse_state_changed *ev = as_zmk_mouse_state_changed(eh);
+    if (!ev) {
+        send_key(2, 2); // X ou outra indicação visual
+        return ZMK_EV_EVENT_BUBBLE;
+    }
+
+    // Cria um novo evento com os mesmos valores
+    struct zmk_mouse_state_changed new_ev = {
+        .dx = ev->dx,
+        .dy = ev->dy,
+        .scroll_x = ev->scroll_x,
+        .scroll_y = ev->scroll_y,
+        .buttons = ev->buttons,
+    };
+
+    // Levanta o evento: o ZMK cuida da transmissão para o central
+    ZMK_EVENT_RAISE(new_ev);
+
+    // Indicação visual para teste
     send_key(0, 4); // 'r'
-    // send_key(0, 8); // 'i'
+    LOG_INF("Evento levantado e enviado via split -> dx=%d dy=%d scroll_x=%d scroll_y=%d btn=%d",
+            ev->dx, ev->dy, ev->scroll_x, ev->scroll_y, ev->buttons);
+
+    return ZMK_EV_EVENT_BUBBLE; // <-- Corrigido
 }
 
-// Listener que reage a um evento qualquer (ex: zmk_mouse_state_changed) test_listener
-static int test_listener_cb(const zmk_event_t *eh) {
-    // Aqui você pode escolher qual evento vai disparar a mensagem
-    // Por exemplo, qualquer evento de mouse ou teclado
-    send_test_message();
-    return 0;
-}
-
-// Registra listener e subscription
-ZMK_LISTENER(test_right, test_listener_cb);
-ZMK_SUBSCRIPTION(test_right, zmk_mouse_state_changed); // ou outro evento que queira usar
+ZMK_LISTENER(mouse_tx_listener, mouse_tx_listener);
+ZMK_SUBSCRIPTION(mouse_tx_listener, zmk_mouse_state_changed);

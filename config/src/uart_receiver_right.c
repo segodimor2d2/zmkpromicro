@@ -8,7 +8,7 @@
 #include <zmk/hid.h>
 #include <zmk/event_manager.h>
 #include <zmk/uart_switch_right.h>
-#include "zmk_mouse_state_changed.h"
+#include "zmk/events/zmk_mouse_state_changed.h"
 
 LOG_MODULE_REGISTER(uart_receiver_right, LOG_LEVEL_INF);
 

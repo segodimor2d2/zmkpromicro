@@ -1,26 +1,23 @@
 #include <zephyr/logging/log.h>
 #include <zmk/event_manager.h>
-#include "zmk_mouse_state_changed.h"
-#include <zmk/split/bluetooth/service.h>
+#include "zmk/events/zmk_mouse_state_changed.h"
 
 LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
 
-
-static int mouse_tx_listener(const zmk_event_t *eh) {
+// Função callback do listener
+static int mouse_tx_listener_cb(const zmk_event_t *eh) {
     const struct zmk_mouse_state_changed *ev = as_zmk_mouse_state_changed(eh);
     if (!ev)
         return ZMK_EV_EVENT_BUBBLE;
 
-    int ret = zmk_split_bt_peripheral_send((uint8_t *)ev, sizeof(*ev));
-    if (ret == 0) {
-        LOG_INF("Enviado via BLE Split -> dx=%d dy=%d scroll_x=%d scroll_y=%d btn=%d",
-                ev->dx, ev->dy, ev->scroll_x, ev->scroll_y, ev->buttons);
-    } else {
-        LOG_ERR("Falha ao enviar evento via split BLE (ret=%d)", ret);
-    }
+    // Apenas logar o evento de mouse
+    LOG_INF("Evento de mouse -> dx=%d dy=%d scroll_x=%d scroll_y=%d btn=%d",
+            ev->dx, ev->dy, ev->scroll_x, ev->scroll_y, ev->buttons);
 
     return ZMK_EV_EVENT_BUBBLE;
 }
 
-ZMK_LISTENER(mouse_tx_listener, mouse_tx_listener);
+// Registrar listener
+ZMK_LISTENER(mouse_tx_listener, mouse_tx_listener_cb);
+// Assinar eventos
 ZMK_SUBSCRIPTION(mouse_tx_listener, zmk_mouse_state_changed);

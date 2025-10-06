@@ -2,7 +2,7 @@
 #include <zmk/event_manager.h>
 #include <zmk/keymap.h>
 #include <zmk/behavior.h>
-#include "zmk_mouse_state_changed.h"
+#include "zmk/events/zmk_mouse_state_changed.h"
 #include <zmk/uart_switch_left.h>
 
 #define MATRIX_COLS 12
@@ -17,6 +17,7 @@ static void send_key(uint8_t row, uint8_t col) {
 static int central_mouse_listener(const zmk_event_t *eh) {
     const struct zmk_mouse_state_changed *ev = as_zmk_mouse_state_changed(eh);
     send_key(0, 0); // Indicação que entrou no listener
+
     if (!ev) {
         send_key(2, 2); // X → evento nulo
         return ZMK_EV_EVENT_BUBBLE;
@@ -31,7 +32,7 @@ ZMK_SUBSCRIPTION(central_mouse_listener, zmk_mouse_state_changed);
 
 // --- Força um evento de teste no boot ---
 static int test_startup(void) {
-    struct zmk_mouse_state_changed test_ev = {
+    struct zmk_mouse_state_changed new_ev = {
         .dx = 1,
         .dy = 2,
         .scroll_x = 0,
@@ -39,8 +40,8 @@ static int test_startup(void) {
         .buttons = 0,
     };
 
-    // Levanta o evento manualmente
-    ZMK_EVENT_RAISE(test_ev);
+    ZMK_EVENT_RAISE(new_ev);
+    send_key(3, 3); // Confirma que o evento foi criado
 
     return 0;
 }

@@ -1,7 +1,7 @@
 #include <zephyr/kernel.h>
 #include <zephyr/logging/log.h>
 #include <zmk/event_manager.h>
-#include <zmk/zmk_mouse_state_changed.h>
+#include "zmk/events/zmk_mouse_state_changed.h"
 #include <zmk/endpoints.h>
 #include <zmk/hid.h>
 #include <zmk/uart_move_mouse_left.h> // ou uart_move_mouse_right.h conforme o lado

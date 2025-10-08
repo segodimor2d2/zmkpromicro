@@ -1,11 +1,12 @@
 #pragma once
 
 #include <zephyr/kernel.h>
+#include <zmk/hid.h>
 
-struct my_mouse_report {
-    int8_t dx;
-    int8_t dy;
-    int8_t scroll_x;
-    int8_t scroll_y;
-    uint32_t buttons;
-} __packed;
+int uart_move_mouse_right(
+    int8_t dx,
+    int8_t dy,
+    int8_t scroll_y,
+    int8_t scroll_x,
+    uint8_t buttons
+);

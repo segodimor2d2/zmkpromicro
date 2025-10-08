@@ -1,14 +1,11 @@
-/* uart_receiver_right.c - versão simplificada para int8_t no mouse */
+/* uart_receiver_right.c */
+#include <zephyr/kernel.h>
 #include <zephyr/device.h>
 #include <zephyr/drivers/uart.h>
 #include <zephyr/init.h>
-#include <zephyr/kernel.h>
 #include <zephyr/logging/log.h>
-#include <zmk/endpoints.h>
-#include <zmk/hid.h>
-#include <zmk/event_manager.h>
 #include <zmk/uart_switch_right.h>
-#include "zmk/events/zmk_mouse_state_changed.h"
+#include <zmk/uart_move_mouse_right.h>
 
 LOG_MODULE_REGISTER(uart_receiver_right, LOG_LEVEL_INF);
 
@@ -38,7 +35,7 @@ struct uart_event_right_t {
             int8_t dy;
             int8_t scroll_y;
             int8_t scroll_x;
-            zmk_mouse_button_flags_t buttons;
+            uint8_t buttons;
         } mouse;
     };
 };
@@ -67,19 +64,16 @@ void uart_event_thread_right(void *a, void *b, void *c)
             );
             break;
 
-        case EVT_MOUSE: {
-            struct zmk_mouse_state_changed ev = {
-                .dx = event.mouse.dx,
-                .dy = event.mouse.dy,
-                .scroll_y = event.mouse.scroll_y,
-                .scroll_x = event.mouse.scroll_x,
-                .buttons = event.mouse.buttons,
-            };
-
-            ev.header.event = &zmk_event_zmk_mouse_state_changed;
-            ZMK_EVENT_RAISE(ev);
+        case EVT_MOUSE:
+            uart_move_mouse_right(
+                event.mouse.dx,
+                event.mouse.dy,
+                event.mouse.scroll_y,
+                event.mouse.scroll_x,
+                event.mouse.buttons
+            );
             break;
-        }
+        
         default:
             LOG_WRN("Evento desconhecido: %02x", event.event_type);
             break;

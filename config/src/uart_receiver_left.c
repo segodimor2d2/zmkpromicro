@@ -1,4 +1,4 @@
-/* uart_receiver_left.c - versão simplificada com int8_t */
+/* uart_receiver_left.c */
 #include <zephyr/kernel.h>
 #include <zephyr/device.h>
 #include <zephyr/drivers/uart.h>
@@ -66,7 +66,7 @@ void uart_left_event_thread(void *a, void *b, void *c)
             break;
 
         case EVT_MOUSE:
-            uart_move_mouse(
+            uart_move_mouse_left(
                 event.mouse.dx,
                 event.mouse.dy,
                 event.mouse.scroll_y,

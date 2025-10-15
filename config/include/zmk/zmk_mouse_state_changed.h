@@ -8,9 +8,11 @@ struct zmk_mouse_state_changed {
     zmk_event_t header;  // CORRETO: typedef do event manager
     int8_t dx;
     int8_t dy;
-    int8_t scroll_x;
-    int8_t scroll_y;
-    uint8_t buttons;
+    // int8_t scroll_x;
+    // int8_t scroll_y;
+    // uint8_t buttons;
 };
 
 ZMK_EVENT_DECLARE(zmk_mouse_state_changed);
+
+

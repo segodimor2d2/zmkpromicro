@@ -1,3 +1,4 @@
+/* 3️⃣ Configura UART e pinos normalmente */
 &pinctrl {
     uart0_default: uart0_default {
         group1 {
@@ -83,11 +84,3 @@
 /*     compatible = "zephyr,input"; */
 /*     label = "simple_mouse"; */
 /* }; */
-
-
-/ {
-    my_input_devices {
-        compatible = "zephyr,input";
-        label = "simple_mouse";
-    };
-};

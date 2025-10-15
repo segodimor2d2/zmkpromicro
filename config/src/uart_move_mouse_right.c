@@ -4,6 +4,7 @@
 #include <zephyr/device.h>
 #include <zmk/uart_move_mouse_right.h>
 #include <zmk/uart_switch_right.h>
+#include "zmk/zmk_mouse_state_changed.h"
 
 LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
 
@@ -27,21 +28,34 @@ int uart_move_mouse_right(int8_t dx,
                           int8_t scroll_x,
                           uint8_t buttons) {
 
-  
-    int ret;
 
-    ret = input_report_rel(dev, INPUT_REL_X, dx, false, K_FOREVER);
-    if (ret == 0) {
-        send_key(1, 1); // a → evento válido
-    } else {
-        send_key(2, 2); // x → evento válido
-    }
-    ret = input_report_rel(dev, INPUT_REL_Y, dy, true, K_FOREVER);
-    if (ret == 0) {
-        send_key(1, 2); // s → evento válido
-    } else {
-        send_key(2, 2); // x → evento válido
-    }
+
+    // input_report_rel(dev, INPUT_REL_X, dx, false, K_FOREVER);
+    // input_report_rel(dev, INPUT_REL_Y, dy, true, K_FOREVER);
+    // send_key(1, 1); // a → evento válido
+  
+    // int ret_x = input_report_rel(dev, INPUT_REL_X, dx, false, K_FOREVER);
+    // int ret_y = input_report_rel(dev, INPUT_REL_Y, dy, true, K_FOREVER);
+    //
+    // if (ret_x == 0 && ret_y == 0) {
+    // //
+        struct zmk_mouse_state_changed ev = {
+            .dx = dx,
+            .dy = dy
+            // .scroll_y = scroll_y,
+            // .scroll_x = scroll_x,
+            // .buttons = buttons,
+        };
+
+        ZMK_EVENT_RAISE(ev);
+        send_key(1, 1); // A → sucesso
+    //
+    // } else {
+    //     send_key(2, 2); // X → erro
+    // }
+
+
+    // LOG_INF(ret);
 
 
 

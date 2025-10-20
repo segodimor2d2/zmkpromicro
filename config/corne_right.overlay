@@ -1,3 +1,5 @@
+
+
 /* 3️⃣ Configura UART e pinos normalmente */
 &pinctrl {
     uart0_default: uart0_default {
@@ -84,3 +86,13 @@
 /*     compatible = "zephyr,input"; */
 /*     label = "simple_mouse"; */
 /* }; */
+
+
+/* #include "../keyboard.dtsi" */
+/* #include "keyboard.dtsi" */
+/* #include "/home/segodimo/zmkpromicro/config/keyboard.dtsi" */
+
+/* &test_listener { */
+    /* status = "okay"; */
+/* }; */
+

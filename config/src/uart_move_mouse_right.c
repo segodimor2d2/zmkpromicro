@@ -4,11 +4,16 @@
 #include <zephyr/device.h>
 #include <zmk/uart_move_mouse_right.h>
 #include <zmk/uart_switch_right.h>
-#include "zmk/zmk_mouse_state_changed.h"
 
 LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
 
-const struct device *dev;
+
+// const struct device *dev;
+// static const struct device *dev = DEVICE_DT_GET_ANY(zmk_input_device);
+// static const struct device *dev = DEVICE_DT_GET(DT_CHOSEN(zmk_input_device));
+
+// Obter o dispositivo do mouse input
+// static const struct device *mouse_dev = DEVICE_DT_GET(DT_NODELABEL(zmk_input_mouse));
 
 #define MATRIX_COLS 12
 #define ZMK_KEYMAP_POSITION(row, col) ((row) * MATRIX_COLS + (col))
@@ -39,16 +44,16 @@ int uart_move_mouse_right(int8_t dx,
     //
     // if (ret_x == 0 && ret_y == 0) {
     // //
-        struct zmk_mouse_state_changed ev = {
-            .dx = dx,
-            .dy = dy
-            // .scroll_y = scroll_y,
-            // .scroll_x = scroll_x,
-            // .buttons = buttons,
-        };
-
-        ZMK_EVENT_RAISE(ev);
-        send_key(1, 1); // A → sucesso
+        // struct zmk_mouse_state_changed ev = {
+        //     .dx = dx,
+        //     .dy = dy
+        //     // .scroll_y = scroll_y,
+        //     // .scroll_x = scroll_x,
+        //     // .buttons = buttons,
+        // };
+        //
+        // ZMK_EVENT_RAISE(ev);
+        // send_key(1, 1); // A → sucesso
     //
     // } else {
     //     send_key(2, 2); // X → erro
@@ -57,6 +62,7 @@ int uart_move_mouse_right(int8_t dx,
 
     // LOG_INF(ret);
 
+    send_key(1, 1); // A → sucesso
 
 
     return 0;

@@ -18,29 +18,36 @@ static void send_key(uint8_t row, uint8_t col) {
 }
 
 
-static int handle_sensor_event(const zmk_event_t *eh) {
-    const struct zmk_sensor_event *event = as_zmk_sensor_event(eh);
+static inline bool is_mouse_packet(uint32_t pos) {
+    return (pos & (1u << 31)) != 0;
+}
 
-    if (!event) {
-        return 0;
-        send_key(2, 2);//x
+static inline void decode_dxdy(uint32_t pos, int8_t *dx, int8_t *dy) {
+    uint8_t udx = (pos >> 16) & 0xFF;
+    uint8_t udy = pos & 0xFF;
+    *dx = (int8_t)udx;
+    *dy = (int8_t)udy;
+}
+
+static int handle_split_mouse(const zmk_event_t *eh) {
+    const struct zmk_position_state_changed *p = as_zmk_position_state_changed(eh);
+    if (!p) {
+        return ZMK_EV_EVENT_BUBBLE;
     }
 
-    send_key(0, 6);//y
+    // ignore events que não são pacotes de mouse
+    if (!is_mouse_packet(p->position)) {
+        return ZMK_EV_EVENT_BUBBLE; // permite que keypresses sigam normalmente
+    }
 
-    int8_t dx = event->channel_data[0].value.val1;
-    int8_t dy = event->channel_data[0].value.val2;
+    int8_t dx = 0, dy = 0;
+    decode_dxdy(p->position, &dx, &dy);
 
-    // Chama sua função existente (definida em uart_move_mouse_left.h)
-    uart_move_mouse_left(
-        dx,       // deslocamento horizontal
-        dy,       // deslocamento vertical
-        0,        // scroll_y (não usado por enquanto)
-        0,        // scroll_x (não usado)
-        0         // buttons (sem cliques)
-    );
+    LOG_DBG("Received split mouse dx=%d dy=%d", dx, dy);
 
-    return 0;
+    (void)uart_move_mouse_left(dx, dy, 0, 0, 0);
+
+    return ZMK_EV_EVENT_BUBBLE;
 }
 
 ZMK_LISTENER(mouse_listener, handle_sensor_event);

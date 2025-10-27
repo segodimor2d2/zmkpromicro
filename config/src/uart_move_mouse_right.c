@@ -2,23 +2,19 @@
 #include <zephyr/kernel.h>
 #include <zephyr/logging/log.h>
 #include <zephyr/device.h>
+
 #include <zmk/uart_move_mouse_right.h>
 #include <zmk/uart_switch_right.h>
 
+#include <zmk/event_manager.h>
+#include <zmk/events/mouse_split_event.h>   // ✅ nosso novo evento
+
 LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
-
-
-// const struct device *dev;
-// static const struct device *dev = DEVICE_DT_GET_ANY(zmk_input_device);
-// static const struct device *dev = DEVICE_DT_GET(DT_CHOSEN(zmk_input_device));
-
-// Obter o dispositivo do mouse input
-// static const struct device *mouse_dev = DEVICE_DT_GET(DT_NODELABEL(zmk_input_mouse));
 
 #define MATRIX_COLS 12
 #define ZMK_KEYMAP_POSITION(row, col) ((row) * MATRIX_COLS + (col))
 
-// Função auxiliar para enviar uma tecla
+// Função auxiliar para enviar uma tecla simulada (debug opcional)
 static void send_key(uint8_t row, uint8_t col) {
     uart_switch_simulate_right(row, col, true);   // Press
     k_msleep(20);
@@ -26,44 +22,33 @@ static void send_key(uint8_t row, uint8_t col) {
     k_msleep(20);
 }
 
-// Recebe dados UART e envia movimento relativo.
+/*
+ * Função pública para enviar movimento do mouse do lado direito (peripheral)
+ * Agora usando o evento zmk_mouse_split_event, compatível com ZMK v3.5.0.
+ */
 int uart_move_mouse_right(int8_t dx,
                           int8_t dy,
                           int8_t scroll_y,
                           int8_t scroll_x,
                           uint8_t buttons) {
 
+    LOG_DBG("uart_move_mouse_right: dx=%d dy=%d scroll_x=%d scroll_y=%d buttons=%d",
+            dx, dy, scroll_x, scroll_y, buttons);
 
+    // Prepara o evento customizado
+    struct zmk_mouse_split_event ev = {
+        .dx = dx,
+        .dy = dy,
+        .scroll_x = scroll_x,
+        .scroll_y = scroll_y,
+        .buttons = buttons,
+    };
 
-    // input_report_rel(dev, INPUT_REL_X, dx, false, K_FOREVER);
-    // input_report_rel(dev, INPUT_REL_Y, dy, true, K_FOREVER);
-    // send_key(1, 1); // a → evento válido
-  
-    // int ret_x = input_report_rel(dev, INPUT_REL_X, dx, false, K_FOREVER);
-    // int ret_y = input_report_rel(dev, INPUT_REL_Y, dy, true, K_FOREVER);
-    //
-    // if (ret_x == 0 && ret_y == 0) {
-    // //
-        // struct zmk_mouse_state_changed ev = {
-        //     .dx = dx,
-        //     .dy = dy
-        //     // .scroll_y = scroll_y,
-        //     // .scroll_x = scroll_x,
-        //     // .buttons = buttons,
-        // };
-        //
-        // ZMK_EVENT_RAISE(ev);
-        // send_key(1, 1); // A → sucesso
-    //
-    // } else {
-    //     send_key(2, 2); // X → erro
-    // }
+    // Envia o evento pelo Event Manager (será transportado via split)
+    ZMK_EVENT_RAISE(ev);
 
-
-    // LOG_INF(ret);
-
-    send_key(1, 1); // A → sucesso
-
+    // Opcional: indicar sucesso com uma tecla fake (para debug visual)
+    // send_key(1, 1);
 
     return 0;
 }

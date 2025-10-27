@@ -30,7 +30,7 @@ else()
     ${CMAKE_CURRENT_LIST_DIR}/uart_move_mouse_right.c
     # ${CMAKE_CURRENT_LIST_DIR}/test_mouse_r.c
     # ${CMAKE_CURRENT_LIST_DIR}/debug_ble_events_r.c
-    ${CMAKE_CURRENT_LIST_DIR}/split_mouse_tx.c
+    # ${CMAKE_CURRENT_LIST_DIR}/split_mouse_tx.c
     # ${CMAKE_CURRENT_LIST_DIR}/my_mouse_logger.c
     # ${CMAKE_CURRENT_LIST_DIR}/mouse_tx_listener.c
     # ${CMAKE_CURRENT_LIST_DIR}/mouse_test_sender.c

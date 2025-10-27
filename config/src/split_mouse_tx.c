@@ -1,38 +1,31 @@
-// split_mouse_tx.c
 #include <zephyr/kernel.h>
 #include <zephyr/logging/log.h>
 #include <zmk/event_manager.h>
-#include <zmk/events/position_state_changed.h>
+#include <zmk/events/mouse_split_event.h>
 
-LOG_MODULE_REGISTER(split_mouse_tx, CONFIG_ZMK_LOG_LEVEL);
+LOG_MODULE_REGISTER(split_mouse_rx, CONFIG_ZMK_LOG_LEVEL);
 
-// Encode dx,dy into a single uint32_t position
-static inline uint32_t encode_dxdy(int8_t dx, int8_t dy) {
-    uint32_t udx = (uint8_t)dx;
-    uint32_t udy = (uint8_t)dy;
-    return (udx << 16) | udy;
-}
+int uart_move_mouse_left(
+    int8_t dx,
+    int8_t dy,
+    int8_t scroll_y,
+    int8_t scroll_x,
+    uint8_t buttons
+);
 
-// Public function to call when you want to send mouse motion
-void split_mouse_send(int8_t dx, int8_t dy) {
-    struct zmk_position_state_changed ev = {
-        .source = ZMK_POSITION_STATE_CHANGE_SOURCE_LOCAL,
-        .state = true,
-        .position = encode_dxdy(dx, dy),
-        .timestamp = k_uptime_get(),
-    };
-
-    // raise the event — position_state_changed is forwarded by split transport
-    raise_zmk_position_state_changed(ev);
-}
-
-// Optional: small test thread that sends motion periodically
-#if 1
-static void test_thread(void *) {
-    while (1) {
-        split_mouse_send(5, -3);
-        k_msleep(1000);
+static int handle_split_mouse(const zmk_event_t *eh) {
+    const struct zmk_mouse_split_event *ev = as_zmk_mouse_split_event(eh);
+    if (!ev) {
+        return ZMK_EV_EVENT_BUBBLE;
     }
+
+    LOG_DBG("Received zmk_mouse_split_event dx=%d dy=%d scroll_x=%d scroll_y=%d buttons=%d",
+            ev->dx, ev->dy, ev->scroll_x, ev->scroll_y, ev->buttons);
+
+    uart_move_mouse_left(ev->dx, ev->dy, ev->scroll_y, ev->scroll_x, ev->buttons);
+
+    return ZMK_EV_EVENT_BUBBLE;
 }
-K_THREAD_DEFINE(split_mouse_tx_thread_id, 1024, test_thread, NULL, NULL, NULL, 5, 0, 0);
-#endif
+
+ZMK_LISTENER(split_mouse_rx_listener, handle_split_mouse);
+ZMK_SUBSCRIPTION(split_mouse_rx_listener, zmk_mouse_split_event);

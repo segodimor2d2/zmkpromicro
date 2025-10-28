@@ -3,9 +3,9 @@ zephyr_include_directories(${ZMK_CONFIG}/include)
 zephyr_include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../include)
 
 # # Fonte comum (sempre incluída)
-# target_sources(app PRIVATE
-#   ${CMAKE_CURRENT_LIST_DIR}/zmk_mouse_state_changed.c
-# )
+target_sources(app PRIVATE
+  ${CMAKE_CURRENT_LIST_DIR}/mouse_split_event.c
+)
 
 if(CONFIG_ZMK_SPLIT_ROLE_CENTRAL)
   # Central (lado esquerdo)

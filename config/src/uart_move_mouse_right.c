@@ -22,10 +22,6 @@ static void send_key(uint8_t row, uint8_t col) {
     k_msleep(20);
 }
 
-/*
- * Função pública para enviar movimento do mouse do lado direito (peripheral)
- * Agora usando o evento zmk_mouse_split_event, compatível com ZMK v3.5.0.
- */
 int uart_move_mouse_right(int8_t dx,
                           int8_t dy,
                           int8_t scroll_y,
@@ -34,6 +30,7 @@ int uart_move_mouse_right(int8_t dx,
 
     LOG_DBG("uart_move_mouse_right: dx=%d dy=%d scroll_x=%d scroll_y=%d buttons=%d",
             dx, dy, scroll_x, scroll_y, buttons);
+
 
     // Prepara o evento customizado
     struct zmk_mouse_split_event ev = {

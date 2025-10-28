@@ -1,11 +1,10 @@
 #pragma once
 
 #include <zephyr/kernel.h>
-#include <zephyr/logging/log.h>
 #include <zmk/event_manager.h>
 
 struct zmk_mouse_split_event {
-    zmk_event_t header;  // Campo obrigatório para todos os eventos do ZMK
+    zmk_event_t header;
     int8_t dx;
     int8_t dy;
     int8_t scroll_x;

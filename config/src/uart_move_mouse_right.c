@@ -4,31 +4,21 @@
 #include <zephyr/device.h>
 
 #include <zmk/uart_move_mouse_right.h>
-#include <zmk/uart_switch_right.h>
 
 #include <zmk/event_manager.h>
-#include <zmk/events/mouse_split_event.h>   // ✅ nosso novo evento
+#include <zmk/events/mouse_split_event.h>
 
-// #include <zmk/led_debug.h>  // ✅ Adicione este include
+#include <zmk/led_debug.h>
 
 LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
-
-#define MATRIX_COLS 12
-#define ZMK_KEYMAP_POSITION(row, col) ((row) * MATRIX_COLS + (col))
-
-// Função auxiliar para enviar uma tecla simulada (debug opcional)
-static void send_key(uint8_t row, uint8_t col) {
-    uart_switch_simulate_right(row, col, true);   // Press
-    k_msleep(20);
-    uart_switch_simulate_right(row, col, false);  // Release
-    k_msleep(20);
-}
 
 int uart_move_mouse_right(int8_t dx,
                           int8_t dy,
                           int8_t scroll_y,
                           int8_t scroll_x,
                           uint8_t buttons) {
+
+    led_debug_init();
 
     LOG_DBG("uart_move_mouse_right: dx=%d dy=%d scroll_x=%d scroll_y=%d buttons=%d",
             dx, dy, scroll_x, scroll_y, buttons);
@@ -47,8 +37,7 @@ int uart_move_mouse_right(int8_t dx,
     ZMK_EVENT_RAISE(ev);
 
     // Opcional: indicar sucesso com uma tecla fake (para debug visual)
-    // led_blink_pattern(1, 200);
-    send_key(1, 1);//a
+    led_blink_pattern(1, 200);
 
     return 0;
 }

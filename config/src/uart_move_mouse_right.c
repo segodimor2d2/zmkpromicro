@@ -9,6 +9,8 @@
 #include <zmk/event_manager.h>
 #include <zmk/events/mouse_split_event.h>   // ✅ nosso novo evento
 
+// #include <zmk/led_debug.h>  // ✅ Adicione este include
+
 LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
 
 #define MATRIX_COLS 12
@@ -45,7 +47,8 @@ int uart_move_mouse_right(int8_t dx,
     ZMK_EVENT_RAISE(ev);
 
     // Opcional: indicar sucesso com uma tecla fake (para debug visual)
-    // send_key(1, 1);
+    // led_blink_pattern(1, 200);
+    send_key(1, 1);//a
 
     return 0;
 }

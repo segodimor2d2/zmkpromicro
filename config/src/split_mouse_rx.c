@@ -9,9 +9,7 @@ LOG_MODULE_REGISTER(split_mouse_rx, CONFIG_ZMK_LOG_LEVEL);
 
 static int handle_split_mouse(const zmk_event_t *eh) {
 
-    // ✅ CORRETO para ZMK v3.5.0 - use as_zmk_mouse_split_event
-    const struct zmk_mouse_split_event *ev = as_zmk_mouse_split_event(eh);
-
+    const struct zmk_mouse_split_event *ev = cast_zmk_mouse_split_event(eh);
     if (!ev) {
         return ZMK_EV_EVENT_BUBBLE;
     }

@@ -60,7 +60,7 @@ int split_mouse_notify(const uint8_t *data, uint8_t len)
                             split_mouse_value, len);
 
     if (rc == 0) {
-        led_blink_pattern(1, 80);
+        led_blink_pattern(1, 40);
     }
 
     return rc;

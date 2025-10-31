@@ -47,3 +47,13 @@ void led_set(bool state) {
 
     gpio_pin_set(port, LED_PIN, state ? 1 : 0);
 }
+
+// ✅ Inicialização automática no boot
+static int led_debug_init_wrapper(const struct device *unused)
+{
+    ARG_UNUSED(unused);
+    led_debug_init();
+    return 0;
+}
+
+SYS_INIT(led_debug_init_wrapper, APPLICATION, CONFIG_APPLICATION_INIT_PRIORITY);

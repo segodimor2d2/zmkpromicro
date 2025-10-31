@@ -9,7 +9,7 @@
 #include <zmk/events/mouse_split_event.h>
 
 #include <zmk/split_mouse_service.h>
-// #include <zmk/led_debug.h>
+#include <zmk/led_debug.h>
 
 LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
 
@@ -18,8 +18,6 @@ int uart_move_mouse_right(int8_t dx,
                           int8_t scroll_y,
                           int8_t scroll_x,
                           uint8_t buttons) {
-
-    led_debug_init();
 
     LOG_DBG("uart_move_mouse_right: dx=%d dy=%d scroll_x=%d scroll_y=%d buttons=%d",
             dx, dy, scroll_x, scroll_y, buttons);
@@ -36,7 +34,7 @@ int uart_move_mouse_right(int8_t dx,
     split_mouse_notify(payload, sizeof(payload));
 
     // Opcional: indicar sucesso com uma tecla fake (para debug visual)
-    // led_blink_pattern(1, 200);
+    // led_blink_pattern(1, 60);
 
     return 0;
 }

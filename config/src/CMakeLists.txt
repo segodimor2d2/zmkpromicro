@@ -16,6 +16,7 @@ if(CONFIG_ZMK_SPLIT_ROLE_CENTRAL)
     ${CMAKE_CURRENT_LIST_DIR}/uart_move_mouse_left.c
     ${CMAKE_CURRENT_LIST_DIR}/split_mouse_central.c
     # ${CMAKE_CURRENT_LIST_DIR}/mouse_listener.c
+    # ${CMAKE_CURRENT_LIST_DIR}/test_mouse_l_led.c
     # ${CMAKE_CURRENT_LIST_DIR}/test_mouse_l.c
     # ${CMAKE_CURRENT_LIST_DIR}/mouse_state_listener.
   )

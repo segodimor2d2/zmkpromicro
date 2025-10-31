@@ -78,11 +78,13 @@ static uint8_t split_mouse_discover_func(struct bt_conn *conn,
         subscribe_params.disc_params = NULL;
 
         int rc = bt_gatt_subscribe(conn, &subscribe_params);
+
         if (rc == 0) {
             led_blink_pattern(4, 60);  // subscribe OK
         } else {
             led_blink_pattern(5, 200); // subscribe falhou!
         }
+
         LOG_INF("split_mouse: subscribe rc=%d", rc);
 
         memset(params, 0, sizeof(*params));

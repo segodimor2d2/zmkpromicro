@@ -8,7 +8,8 @@
 #include <zmk/event_manager.h>
 #include <zmk/events/mouse_split_event.h>
 
-#include <zmk/led_debug.h>
+#include <zmk/split_mouse_service.h>
+// #include <zmk/led_debug.h>
 
 LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
 
@@ -23,21 +24,19 @@ int uart_move_mouse_right(int8_t dx,
     LOG_DBG("uart_move_mouse_right: dx=%d dy=%d scroll_x=%d scroll_y=%d buttons=%d",
             dx, dy, scroll_x, scroll_y, buttons);
 
-
-    // Prepara o evento customizado
-    struct zmk_mouse_split_event ev = {
-        .dx = dx,
-        .dy = dy,
-        .scroll_x = scroll_x,
-        .scroll_y = scroll_y,
-        .buttons = buttons,
+    uint8_t payload[6] = {
+        0x02,
+        (uint8_t)dx,
+        (uint8_t)dy,
+        (uint8_t)scroll_y,
+        (uint8_t)scroll_x,
+        buttons
     };
 
-    // Envia o evento pelo Event Manager (será transportado via split)
-    ZMK_EVENT_RAISE(ev);
+    split_mouse_notify(payload, sizeof(payload));
 
     // Opcional: indicar sucesso com uma tecla fake (para debug visual)
-    led_blink_pattern(1, 200);
+    // led_blink_pattern(1, 200);
 
     return 0;
 }

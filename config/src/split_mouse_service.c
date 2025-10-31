@@ -6,7 +6,7 @@
 #include <zephyr/bluetooth/gatt.h>
 
 #include <zmk/split_mouse_service.h>
-#include <zmk/led_debug.h>
+// #include <zmk/led_debug.h>
 
 LOG_MODULE_REGISTER(split_mouse_svc, CONFIG_ZMK_LOG_LEVEL);
 
@@ -56,12 +56,12 @@ int split_mouse_notify(const uint8_t *data, uint8_t len)
     memcpy(split_mouse_value, data, len);
 
     /* notify para todos os connections */
-    int rc = bt_gatt_notify(NULL, &split_mouse_svc.attrs[1],
+    int rc = bt_gatt_notify(NULL, &split_mouse_svc.attrs[2],
                             split_mouse_value, len);
 
-    if (rc == 0) {
-        led_blink_pattern(1, 40);
-    }
+    // if (rc == 0) {
+    //     led_blink_pattern(1, 40);
+    // }
 
     return rc;
 }

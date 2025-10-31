@@ -6,7 +6,7 @@
 #include <zephyr/bluetooth/gatt.h>
 #include <zephyr/bluetooth/conn.h>
 
-#include <zmk/led_debug.h>
+// #include <zmk/led_debug.h>
 #include <zmk/uart_move_mouse_left.h>
 
 LOG_MODULE_REGISTER(split_mouse_central, CONFIG_ZMK_LOG_LEVEL);
@@ -48,7 +48,7 @@ static uint8_t split_mouse_notify_cb(struct bt_conn *conn,
 
     uart_move_mouse_left(dx, dy, scroll_y, scroll_x, buttons);
 
-    led_blink_pattern(1, 60);
+    // led_blink_pattern(1, 60);
 
     return BT_GATT_ITER_CONTINUE;
 }
@@ -59,7 +59,7 @@ static uint8_t split_mouse_discover_func(struct bt_conn *conn,
                                          struct bt_gatt_discover_params *params)
 {
     if (!attr) {
-        led_blink_pattern(3, 200);
+        // led_blink_pattern(3, 200);
         LOG_WRN("split_mouse: discovery finished (not found)");
         memset(params, 0, sizeof(*params));
         return BT_GATT_ITER_STOP;
@@ -69,21 +69,22 @@ static uint8_t split_mouse_discover_func(struct bt_conn *conn,
     if (!bt_uuid_cmp(params->uuid, &split_mouse_data_uuid.uuid)) {
         LOG_INF("split_mouse: characteristic found, handle=0x%x", attr->handle);
 
-        led_blink_pattern(2, 60);
+        // led_blink_pattern(2, 60);
 
-        subscribe_params.notify     = split_mouse_notify_cb;
-        subscribe_params.value      = BT_GATT_CCC_NOTIFY;
-        subscribe_params.ccc_handle = attr->handle + 2;
-        subscribe_params.end_handle = 0xffff;
+        subscribe_params.notify      = split_mouse_notify_cb;
+        subscribe_params.value       = BT_GATT_CCC_NOTIFY;
+        subscribe_params.value_handle= attr->handle + 1; /* handle do VALUE */
+        subscribe_params.ccc_handle  = attr->handle + 2; /* handle do CCC */
+        subscribe_params.end_handle  = 0xffff;
         subscribe_params.disc_params = NULL;
 
         int rc = bt_gatt_subscribe(conn, &subscribe_params);
 
-        if (rc == 0) {
-            led_blink_pattern(4, 60);  // subscribe OK
-        } else {
-            led_blink_pattern(5, 200); // subscribe falhou!
-        }
+        // if (rc == 0) {
+        //     led_blink_pattern(4, 60);  // subscribe OK
+        // } else {
+        //     led_blink_pattern(5, 200); // subscribe falhou!
+        // }
 
         LOG_INF("split_mouse: subscribe rc=%d", rc);
 
@@ -111,7 +112,7 @@ static void split_mouse_start_discovery(struct bt_conn *conn)
 
 static void split_mouse_connected(struct bt_conn *conn, uint8_t err)
 {
-    led_blink_pattern(10, 40); // indica conexão BLE OK
+    // led_blink_pattern(10, 40); // indica conexão BLE OK
     if (err == 0) {
         split_mouse_start_discovery(conn);
     }

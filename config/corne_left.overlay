@@ -22,5 +22,3 @@
     pinctrl-1 = <&uart0_sleep>;
     pinctrl-names = "default", "sleep";
 };
-
-#include "../boards/shields/corne/keymap_transform.dtsi"

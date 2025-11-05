@@ -1,5 +1,3 @@
-
-
 /* 3️⃣ Configura UART e pinos normalmente */
 &pinctrl {
     uart0_default: uart0_default {
@@ -26,73 +24,4 @@
     pinctrl-names = "default", "sleep";
 };
 
-/ {
-    leds {
-        compatible = "gpio-leds";
-        my_led: led_0 {
-            gpios = <&gpio0 9 GPIO_ACTIVE_HIGH>; // mesmo pino dos dois lados
-            label = "User LED";
-        };
-    };
-
-    aliases {
-        led0 = &my_led; // importante para uart_receiver.c funcionar
-    };
-
-    /* chosen {
-         zmk,run-behavior = &peripheral_behavior; // ou central_behavior para o outro lado
-     }; */
-
-    // Adicione isso para o mapeamento do lado direito
-    kscan0: kscan {
-        compatible = "zmk,kscan-gpio-matrix";
-        diode-direction = "col2row";
-
-        // Troque os pinos abaixo pelos seus rows/cols reais
-        row-gpios = <&gpio0 29 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>,
-                    <&gpio0 28 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>,
-                    <&gpio0 2  (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>,
-                    <&gpio0 45 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
-
-        col-gpios = <&gpio0 3  (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>,
-                    <&gpio0 4  (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>,
-                    <&gpio0 5  (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>,
-                    <&gpio0 6  (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>,
-                    <&gpio0 7  (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>,
-                    <&gpio0 8  (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
-    };
-
-    kscan_transform: kscan-transform {
-        compatible = "zmk,kscan-matrix-transform";
-        rows = <4>;
-        columns = <6>;
-
-        // Lado direito ocupa índices 24..47
-        map = <
-            24 25 26 27 28 29
-            30 31 32 33 34 35
-            36 37 38 39 40 41
-            42 43 44 45 46 47
-        >;
-    };
-};
-
-/* &peripheral_behavior {
-    compatible = "zmk,behavior-split-peripheral";
-}; */
-
-
-/* /input_devices { */
-/*     compatible = "zephyr,input"; */
-/*     label = "simple_mouse"; */
-/* }; */
-
-
-/* #include "../keyboard.dtsi" */
-/* #include "keyboard.dtsi" */
-/* #include "/home/segodimo/zmkpromicro/config/keyboard.dtsi" */
-
-/* &test_listener { */
-    /* status = "okay"; */
-/* }; */
-
+#include "../boards/shields/corne/keymap_transform.dtsi"

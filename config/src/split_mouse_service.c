@@ -23,12 +23,16 @@ LOG_MODULE_REGISTER(split_mouse_svc, CONFIG_ZMK_LOG_LEVEL);
                        0xfe,0x21,0x43,0x65,0x87,0xa9,0xcb,0xed,0x0f)
 
 static struct bt_uuid_128 split_mouse_service_uuid =
-    BT_UUID_INIT_128(0xf0debc9a78563412ULL,
-                     0x12efcdab90785634ULL);
+    BT_UUID_INIT_128(0xf0, 0xde, 0xbc, 0x9a,
+                     0x78, 0x56, 0x34, 0x12,
+                     0x12, 0xef, 0xcd, 0xab,
+                     0x90, 0x78, 0x56, 0x34);
 
 static struct bt_uuid_128 split_mouse_data_uuid =
-    BT_UUID_INIT_128(0x0fedcba987654321ULL,
-                     0x21fedcba98765432ULL);
+    BT_UUID_INIT_128(0x0f, 0xed, 0xcb, 0xa9,
+                     0x87, 0x65, 0x43, 0x21,
+                     0x21, 0xfe, 0xdc, 0xba,
+                     0x98, 0x76, 0x54, 0x32);
 
 /* O valor que vamos enviar (máximo 20 bytes para MTU de BLE) */
 static uint8_t split_mouse_value[20];

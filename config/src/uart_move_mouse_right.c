@@ -6,10 +6,10 @@
 #include <zmk/uart_move_mouse_right.h>
 
 #include <zmk/event_manager.h>
-#include <zmk/events/mouse_split_event.h>
+// #include <zmk/events/mouse_split_event.h>
 
 #include <zmk/split_mouse_service.h>
-#include <zmk/led_debug.h>
+// #include <zmk/led_debug.h>
 
 LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
 

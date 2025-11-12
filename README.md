@@ -10,6 +10,14 @@
 add_subdirectory(${ZMK_CONFIG}/src ${CMAKE_CURRENT_BINARY_DIR}/zmk_config_src)
 
 
+## add button 4ta row on corne zmk/app/boards/shields/corne/corne.dtsi
+### substituir RC(3
+                        RC(3,3) RC(3,4) RC(3,5)  RC(3,6) RC(3,7) RC(3,8)
+### por
+RC(3,0) RC(3,1) RC(3,2) RC(3,3) RC(3,4) RC(3,5)  RC(3,6) RC(3,7) RC(3,8) RC(3,9) RC(3,10) RC(3,11)
+
+
 ## compilation test
 // #error "!!!!VERIFICANDO SE ESTÁ SENDO COMPILADO!!!!"
 #error "!!!!VERIFICANDO SE ESTÁ SENDO COMPILADO!!!!"
+

@@ -7,6 +7,8 @@
 
 LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
 
+// #error "!!!!VERIFICANDO SE ESTÁ SENDO COMPILADO!!!!"
+
 // Número de colunas da matriz lógica (Corne = 12 colunas)
 #define MATRIX_COLS 12
 

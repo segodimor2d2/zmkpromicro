@@ -12,3 +12,4 @@ add_subdirectory(${ZMK_CONFIG}/src ${CMAKE_CURRENT_BINARY_DIR}/zmk_config_src)
 
 ## compilation test
 // #error "!!!!VERIFICANDO SE ESTÁ SENDO COMPILADO!!!!"
+#error "!!!!VERIFICANDO SE ESTÁ SENDO COMPILADO!!!!"

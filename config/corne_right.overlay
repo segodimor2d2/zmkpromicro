@@ -1,3 +1,11 @@
+/ {
+    keymap {
+        transforms = <>;
+    };
+};
+
+#include "corne_custom_transform.dtsi"
+
 /* 3️⃣ Configura UART e pinos normalmente */
 &pinctrl {
     uart0_default: uart0_default {
@@ -23,5 +31,3 @@
     pinctrl-1 = <&uart0_sleep>;
     pinctrl-names = "default", "sleep";
 };
-
-#include "../boards/shields/corne/keymap_transform.dtsi"

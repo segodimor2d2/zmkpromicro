@@ -5,8 +5,9 @@
 #include <zmk/uart_switch_right.h>
 #include <zmk/events/position_state_changed.h>  // Inclua o header do evento
 
-// #error "!!!!VERIFICANDO SE ESTÁ SENDO COMPILADO!!!!"
 LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
+
+// #error "!!!!VERIFICANDO SE ESTÁ SENDO COMPILADO!!!!"
 
 #define MATRIX_COLS 12
 #define ZMK_KEYMAP_POSITION(row, col) ((row) * MATRIX_COLS + (col))

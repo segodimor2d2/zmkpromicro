@@ -1,3 +1,11 @@
+/ {
+    keymap {
+        transforms = <>;
+    };
+};
+
+#include "corne_custom_transform.dtsi"
+
 &pinctrl {
     uart0_default: uart0_default {
         group1 {

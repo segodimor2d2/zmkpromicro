@@ -6,7 +6,6 @@
 
 #include "corne_custom_transform.dtsi"
 
-/* 3️⃣ Configura UART e pinos normalmente */
 &pinctrl {
     uart0_default: uart0_default {
         group1 {

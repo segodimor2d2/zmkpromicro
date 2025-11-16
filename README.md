@@ -15,6 +15,7 @@ add_subdirectory(${ZMK_CONFIG}/src ${CMAKE_CURRENT_BINARY_DIR}/zmk_config_src)
                         RC(3,3) RC(3,4) RC(3,5)  RC(3,6) RC(3,7) RC(3,8)
 ### por
 RC(3,0) RC(3,1) RC(3,2) RC(3,3) RC(3,4) RC(3,5)  RC(3,6) RC(3,7) RC(3,8) RC(3,9) RC(3,10) RC(3,11)
+RC(4,0) RC(4,1) RC(4,2) RC(4,4) RC(4,4) RC(4,5)  RC(4,6) RC(4,7) RC(4,8) RC(4,9) RC(4,10) RC(4,11)
 
 
 ## compilation test

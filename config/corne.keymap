@@ -34,27 +34,6 @@
 
 / {
 
-    behaviors {
-        parenthesis: parenthesis {
-            compatible = "zmk,behavior-tap-dance";
-            label = "PARENTHESIS";
-            #binding-cells = <0>;
-            bindings = <&kp LEFT_PARENTHESIS>, <&kp RIGHT_PARENTHESIS>;
-        };
-        bracket: bracket {
-            compatible = "zmk,behavior-tap-dance";
-            label = "BRACKET";
-            #binding-cells = <0>;
-            bindings = <&kp RBKT>, <&kp LA(PIPE)>;
-        };
-        brace: brace {
-            compatible = "zmk,behavior-tap-dance";
-            label = "BRACE";
-            #binding-cells = <0>;
-            bindings = <&kp RBRC>, <&kp PIPE>;
-        };
-    };
-
     keymap {
       compatible = "zmk,keymap";
 
@@ -72,38 +51,39 @@
       lower_layer {
         display-name = "NUMBER";
         bindings = <
-&kp ESC    &none      &kp N9     &kp N8     &kp N7    &none           &kp LBKT   &kp LS(LEFT_BRACE)  &kp PG_DN       &kp PG_UP     &kp RA(UNDERSCORE)  &kp EXCL     
-&kp LSHFT  &kp EQUAL  &kp N6     &kp N5     &kp N4    &kp N0          &kp SQT    &kp LEFT            &kp DOWN        &kp UP        &kp RIGHT           &kp RA(W)    
-&kp LCTRL  &none      &kp N3     &kp N2     &kp N1    &kp N0          &kp MINUS  &mkp LCLK           &mkp RCLK       &mkp MCLK     &none               &kp KP_DIVIDE
+&kp ESC    &kp MINUS  &kp N9     &kp N8     &kp N7    &none           &none  &kp LS(LEFT_BRACE)  &none         &kp RA(UNDERSCORE)     &kp EXCL            &kp LBKT   
+&kp LSHFT  &kp EQUAL  &kp N6     &kp N5     &kp N4    &kp N0          &none  &kp PIPE            &kp LA(PIPE)  &kp RIGHT_PARENTHESIS  &kp RA(W)           &kp SQT    
+&kp LCTRL  &kp PLUS   &kp N3     &kp N2     &kp N1    &kp N0          &none  &kp RBRC            &kp RBKT      &kp LEFT_PARENTHESIS   &kp KP_DIVIDE       &kp MINUS  
         >;
       };
 
       raise_layer {
         display-name = "SYMBOL";
         bindings = <
-&kp ESC    &trans  &kp LC(HOME)  &kp HOME   &kp END    &kp LC(END)        &kp RA(UNDERSCORE)  &kp MINUS   &kp PLUS   &kp PRCNT   &parenthesis  &kp DELETE
-&kp LSHFT  &trans  &mkp MCLK     &mkp RCLK  &mkp LCLK  &none              &kp N0              &kp STAR    &kp HASH   &kp DLLR    &bracket      &kp GRAVE
-&kp LCTRL  &trans  &trans        &trans     &trans     &trans             &kp EQUAL           &kp AT      &kp EXCL   &kp RA(W)   &brace        &kp AMPS
+&kp ESC    &none  &none         &none         &none         &none        &kp RA(UNDERSCORE)  &kp MINUS   &kp PLUS   &kp PRCNT  &kp DOUBLE_QUOTES  &kp DELETE
+&kp LSHFT  &none  &kp LC(HOME)  &kp HOME      &kp END       &none        &kp N0              &kp STAR    &kp HASH   &kp DLLR   &kp AMPS        &kp GRAVE
+&kp LCTRL  &none  &kp C_MUTE    &kp C_VOL_DN  &kp C_VOL_UP  &none        &kp EQUAL           &kp AT      &kp EXCL   &kp RA(W)  &kp UNDERSCORE  &kp AMPS
         >;
       };
 
       fn_layer {
         display-name = "FN";
         bindings = <
-&kp ESC    &kp F10  &kp F9  &kp F8     &kp F7    &none           &none     &none       &none      &none       &none  &none
-&kp LSHFT  &kp F11  &kp F6  &kp F5     &kp F4    &none           &none     &none       &none      &none       &none  &none
-&kp LCTRL  &kp F12  &kp F3  &kp F2     &kp F1    &none           &kp LEFT  &kp DOWN    &kp UP     &kp RIGHT   &none  &none
+&kp ESC    &kp F10  &kp F9  &kp F8     &kp F7    &none           &msc SCRL_LEFT  &msc SCRL_DOWN  &msc SCRL_UP  &msc SCRL_RIGHT   &kp PG_DN  &none
+&kp LSHFT  &kp F11  &kp F6  &kp F5     &kp F4    &none           &none           &none           &none         &none             &kp PG_UP  &none
+&kp LCTRL  &kp F12  &kp F3  &kp F2     &kp F1    &none           &kp LEFT        &kp DOWN        &kp UP        &kp RIGHT         &none     &none
         >;
       };
 
-      rec_layer {
-        display-name = "REC";
+      fn_layer {
+        display-name = "FN";
         bindings = <
-&kp ESC    &trans  &trans      &trans        &trans        &trans          &trans    &msc SCRL_LEFT  &msc SCRL_DOWN  &msc SCRL_UP    &msc SCRL_RIGHT  &trans
-&kp LSHFT  &trans  &mkp MCLK   &mkp RCLK     &mkp LCLK     &none           &trans    &kp LEFT_ARROW  &kp DOWN        &kp UP          &kp RIGHT        &kp PG_DN
-&kp LCTRL  &trans  &kp C_MUTE  &kp C_VOL_DN  &kp C_VOL_UP  &trans          &trans    &mmv MOVE_LEFT  &mmv MOVE_DOWN  &mmv MOVE_UP     &mmv MOVE_RIGHT    &kp PG_UP
+&kp ESC    &none  &none         &none         &none         &none              &kp RA(UNDERSCORE)  &kp MINUS   &kp PLUS   &kp PRCNT  &kp DOUBLE_QUOTES  &kp DELETE
+&kp LSHFT  &none  &kp LC(HOME)  &kp HOME      &kp END       &kp LC(END)        &kp N0              &kp STAR    &kp HASH   &kp DLLR   &kp AMPS        &kp GRAVE
+&kp LCTRL  &none  &kp C_MUTE    &kp C_VOL_DN  &kp C_VOL_UP  &trans             &kp EQUAL           &kp AT      &kp EXCL   &kp RA(W)  &kp UNDERSCORE  &kp AMPS
         >;
       };
+
 
     };
 };

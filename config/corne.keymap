@@ -51,39 +51,29 @@
       lower_layer {
         display-name = "NUMBER";
         bindings = <
-&kp ESC    &kp MINUS  &kp N9     &kp N8     &kp N7    &none           &none  &kp LS(LEFT_BRACE)  &none         &kp RA(UNDERSCORE)     &kp EXCL            &kp LBKT   
-&kp LSHFT  &kp EQUAL  &kp N6     &kp N5     &kp N4    &kp N0          &none  &kp PIPE            &kp LA(PIPE)  &kp RIGHT_PARENTHESIS  &kp RA(W)           &kp SQT    
-&kp LCTRL  &kp PLUS   &kp N3     &kp N2     &kp N1    &kp N0          &none  &kp RBRC            &kp RBKT      &kp LEFT_PARENTHESIS   &kp KP_DIVIDE       &kp MINUS  
+&none  &kp MINUS  &kp N9     &kp N8     &kp N7    &none           &msc SCRL_LEFT  &msc SCRL_DOWN  &msc SCRL_UP  &msc SCRL_RIGHT   &kp PG_DN  &none
+&none  &kp EQUAL  &kp N6     &kp N5     &kp N4    &kp N0          &none           &none           &none         &none             &kp PG_UP  &none
+&none  &kp PLUS   &kp N3     &kp N2     &kp N1    &kp N0          &kp LEFT        &kp DOWN        &kp UP        &kp RIGHT         &none      &none
         >;
       };
 
       raise_layer {
         display-name = "SYMBOL";
         bindings = <
-&kp ESC    &none  &none         &none         &none         &none        &kp RA(UNDERSCORE)  &kp MINUS   &kp PLUS   &kp PRCNT  &kp DOUBLE_QUOTES  &kp DELETE
-&kp LSHFT  &none  &kp LC(HOME)  &kp HOME      &kp END       &none        &kp N0              &kp STAR    &kp HASH   &kp DLLR   &kp AMPS        &kp GRAVE
-&kp LCTRL  &none  &kp C_MUTE    &kp C_VOL_DN  &kp C_VOL_UP  &none        &kp EQUAL           &kp AT      &kp EXCL   &kp RA(W)  &kp UNDERSCORE  &kp AMPS
+&kp LBKT   &kp EXCL        &kp RA(UNDERSCORE)     &none         &kp LS(LEFT_BRACE)  &none        &kp RA(UNDERSCORE)  &kp MINUS   &kp PLUS   &kp PRCNT  &kp DOUBLE_QUOTES  &kp DELETE
+&kp SQT    &kp RA(W)       &kp RIGHT_PARENTHESIS  &kp LA(PIPE)  &kp PIPE            &none        &kp N0              &kp STAR    &kp HASH   &kp DLLR   &kp AMPS        &kp GRAVE
+&kp MINUS  &kp KP_DIVIDE   &kp LEFT_PARENTHESIS   &kp RBKT      &kp RBRC            &none        &kp EQUAL           &kp AT      &kp EXCL   &kp RA(W)  &kp UNDERSCORE  &kp AMPS
         >;
       };
 
       fn_layer {
         display-name = "FN";
         bindings = <
-&kp ESC    &kp F10  &kp F9  &kp F8     &kp F7    &none           &msc SCRL_LEFT  &msc SCRL_DOWN  &msc SCRL_UP  &msc SCRL_RIGHT   &kp PG_DN  &none
-&kp LSHFT  &kp F11  &kp F6  &kp F5     &kp F4    &none           &none           &none           &none         &none             &kp PG_UP  &none
-&kp LCTRL  &kp F12  &kp F3  &kp F2     &kp F1    &none           &kp LEFT        &kp DOWN        &kp UP        &kp RIGHT         &none     &none
+&kp ESC    &kp F10  &kp F9  &kp F8     &kp F7    &none           &none  &none  &none  &none  &none  &none
+&kp LSHFT  &kp F11  &kp F6  &kp F5     &kp F4    &none           &none  &none  &none  &none  &none  &none
+&kp LCTRL  &kp F12  &kp F3  &kp F2     &kp F1    &none           &none  &none  &none  &none  &none  &none
         >;
       };
-
-      fn_layer {
-        display-name = "FN";
-        bindings = <
-&kp ESC    &none  &none         &none         &none         &none              &kp RA(UNDERSCORE)  &kp MINUS   &kp PLUS   &kp PRCNT  &kp DOUBLE_QUOTES  &kp DELETE
-&kp LSHFT  &none  &kp LC(HOME)  &kp HOME      &kp END       &kp LC(END)        &kp N0              &kp STAR    &kp HASH   &kp DLLR   &kp AMPS        &kp GRAVE
-&kp LCTRL  &none  &kp C_MUTE    &kp C_VOL_DN  &kp C_VOL_UP  &trans             &kp EQUAL           &kp AT      &kp EXCL   &kp RA(W)  &kp UNDERSCORE  &kp AMPS
-        >;
-      };
-
 
     };
 };

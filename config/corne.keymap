@@ -36,6 +36,7 @@
 
     keymap {
       compatible = "zmk,keymap";
+      locale = "br-abnt2";
 
       default_layer {
         display-name = "QWERTY";
@@ -43,35 +44,35 @@
 &kp ESC    &kp Q  &kp W  &kp E      &kp R     &kp T           &kp Y     &kp U  &kp I      &kp O      &kp P     &kp EXCL     
 &kp LSHFT  &kp A  &kp S  &kp D      &kp F     &kp G           &kp H     &kp J  &kp K      &kp L      &kp SEMI  &kp RA(W)    
 &kp LCTRL  &kp Z  &kp X  &kp C      &kp V     &kp B           &kp N     &kp M  &kp COMMA  &kp DOT    &kp FSLH  &kp KP_DIVIDE
-&mo 1  &mo 2  &mo 3 &mo 4  &kp SPACE  &kp ENTER  &kp BSPC  &kp LALT  &kp DELETE  &kp TAB   &kp MINUS  &kp LS(FSLH)
-&kp LEFT_ARROW  &kp DOWN  &kp UP  &kp RIGHT  &mkp LCLK  &mkp RCLK  &mkp MCLK  &msc SCRL_LEFT  &msc SCRL_DOWN  &msc SCRL_UP  &msc SCRL_RIGHT
+&mo 1  &mo 2  &mo 3 &none  &kp SPACE  &kp ENTER  &kp BSPC  &kp LALT  &kp DELETE  &kp TAB   &kp MINUS  &kp LS(FSLH)
+&kp LEFT_ARROW  &kp DOWN  &kp UP  &kp RIGHT  &mkp LCLK  &mkp RCLK  &mkp MCLK  &msc SCRL_LEFT  &msc SCRL_DOWN  &msc SCRL_UP  &msc SCRL_RIGHT  &none 
         >;
       };
 
       lower_layer {
         display-name = "NUMBER";
         bindings = <
-&none  &kp MINUS  &kp N9     &kp N8     &kp N7    &none           &msc SCRL_LEFT  &msc SCRL_DOWN  &msc SCRL_UP  &msc SCRL_RIGHT   &kp PG_DN  &none
-&none  &kp EQUAL  &kp N6     &kp N5     &kp N4    &kp N0          &none           &none           &none         &none             &kp PG_UP  &none
-&none  &kp PLUS   &kp N3     &kp N2     &kp N1    &kp N0          &kp LEFT        &kp DOWN        &kp UP        &kp RIGHT         &none      &none
+&none  &kp MINUS  &kp N9     &kp N8     &kp N7    &none           &msc SCRL_LEFT  &msc SCRL_DOWN  &msc SCRL_UP  &msc SCRL_RIGHT  &none  &none
+&none  &kp EQUAL  &kp N6     &kp N5     &kp N4    &kp N0          &none           &kp PG_DN       &kp PG_UP     &none            &none  &none
+&none  &kp PLUS   &kp N3     &kp N2     &kp N1    &kp N0          &none           &none           &none         &none            &none  &none
         >;
       };
 
       raise_layer {
         display-name = "SYMBOL";
         bindings = <
-&kp LBKT   &kp EXCL        &kp RA(UNDERSCORE)     &none         &kp LS(LEFT_BRACE)  &none        &kp RA(UNDERSCORE)  &kp MINUS   &kp PLUS   &kp PRCNT  &kp DOUBLE_QUOTES  &kp DELETE
-&kp SQT    &kp RA(W)       &kp RIGHT_PARENTHESIS  &kp LA(PIPE)  &kp PIPE            &none        &kp N0              &kp STAR    &kp HASH   &kp DLLR   &kp AMPS        &kp GRAVE
-&kp MINUS  &kp KP_DIVIDE   &kp LEFT_PARENTHESIS   &kp RBKT      &kp RBRC            &none        &kp EQUAL           &kp AT      &kp EXCL   &kp RA(W)  &kp UNDERSCORE  &kp AMPS
+&none  &kp EXCL        &kp LEFT_PARENTHESIS   &none  &kp LS(LEFT_BRACE)  &kp LBKT         &kp RA(UNDERSCORE)  &kp MINUS   &kp PLUS   &kp PRCNT  &kp DOUBLE_QUOTES  &kp DELETE
+&none  &kp RA(W)       &kp RIGHT_PARENTHESIS  &none  &kp PIPE            &kp SQT          &kp N0              &kp STAR    &kp HASH   &kp DLLR   &kp AMPS        &kp GRAVE
+&none  &kp KP_DIVIDE   &kp RA(UNDERSCORE)     &none  &kp RBRC            &none            &kp EQUAL           &kp AT      &kp EXCL   &kp RA(W)  &kp UNDERSCORE  &kp AMPS
         >;
       };
 
       fn_layer {
         display-name = "FN";
         bindings = <
-&kp ESC    &kp F10  &kp F9  &kp F8     &kp F7    &none           &none  &none  &none  &none  &none  &none
-&kp LSHFT  &kp F11  &kp F6  &kp F5     &kp F4    &none           &none  &none  &none  &none  &none  &none
-&kp LCTRL  &kp F12  &kp F3  &kp F2     &kp F1    &none           &none  &none  &none  &none  &none  &none
+&none  &kp F10  &kp F9  &kp F8  &kp F7  &none           &none  &none  &none  &none  &none  &none
+&none  &kp F11  &kp F6  &kp F5  &kp F4  &none           &none  &none  &none  &none  &none  &none
+&none  &kp F12  &kp F3  &kp F2  &kp F1  &none           &none  &none  &none  &none  &none  &none
         >;
       };
 

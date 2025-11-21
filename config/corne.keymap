@@ -41,38 +41,38 @@
       default_layer {
         display-name = "QWERTY";
         bindings = <
-&kp ESC    &kp Q  &kp W  &kp E      &kp R     &kp T           &kp Y     &kp U  &kp I      &kp O      &kp P     &kp EXCL     
-&kp LSHFT  &kp A  &kp S  &kp D      &kp F     &kp G           &kp H     &kp J  &kp K      &kp L      &kp SEMI  &kp RA(W)    
-&kp LCTRL  &kp Z  &kp X  &kp C      &kp V     &kp B           &kp N     &kp M  &kp COMMA  &kp DOT    &kp FSLH  &kp KP_DIVIDE
-&mo 1  &mo 2  &mo 3 &none  &kp SPACE  &kp ENTER  &kp BSPC  &kp LALT  &kp DELETE  &kp TAB   &kp MINUS  &kp LS(FSLH)
-&kp LEFT_ARROW  &kp DOWN  &kp UP  &kp RIGHT  &mkp LCLK  &mkp RCLK  &mkp MCLK  &msc SCRL_LEFT  &msc SCRL_DOWN  &msc SCRL_UP  &msc SCRL_RIGHT  &none 
+&none  &kp Q  &kp W  &kp E      &kp R     &kp T           &kp Y     &kp U  &kp I      &kp O      &kp P     &none
+&none  &kp A  &kp S  &kp D      &kp F     &kp G           &kp H     &kp J  &kp K      &kp L      &kp SEMI  &none
+&none  &kp Z  &kp X  &kp C      &kp V     &kp B           &kp N     &kp M  &kp COMMA  &kp DOT    &kp FSLH  &none
+&mo 1  &mo 2  &mo 3 &kp ENTER  &kp SPACE  &kp DELETE &kp TAB  &kp KP_DIVIDE  &kp BSPC  &kp TAB   &kp MINUS  &kp LS(FSLH)
+&kp ESC  &kp LSHFT  &kp LCTRL  &kp LALT &kp LEFT_ARROW  &kp DOWN  &kp UP  &kp RIGHT  &mkp LCLK  &mkp RCLK  &mkp MCLK   &kp GRAVE
         >;
       };
 
       lower_layer {
         display-name = "NUMBER";
         bindings = <
-&none  &kp MINUS  &kp N9     &kp N8     &kp N7    &none           &msc SCRL_LEFT  &msc SCRL_DOWN  &msc SCRL_UP  &msc SCRL_RIGHT  &none  &none
-&none  &kp EQUAL  &kp N6     &kp N5     &kp N4    &kp N0          &none           &kp PG_DN       &kp PG_UP     &none            &none  &none
-&none  &kp PLUS   &kp N3     &kp N2     &kp N1    &kp N0          &none           &none           &none         &none            &none  &none
+&none  &kp MINUS  &kp N9     &kp N8     &kp N7    &none             &msc SCRL_LEFT  &msc SCRL_DOWN  &msc SCRL_UP  &msc SCRL_RIGHT  &kp EXCL       &none
+&none  &kp EQUAL  &kp N6     &kp N5     &kp N4    &kp N0            &kp END         &kp PG_DN       &kp PG_UP     &kp  HOME        &kp RA(W)      &none
+&none  &kp PLUS   &kp N3     &kp N2     &kp N1    &kp N0            &none           &none           &none         &none            &kp KP_DIVIDE  &none
         >;
       };
 
       raise_layer {
         display-name = "SYMBOL";
         bindings = <
-&none  &kp EXCL        &kp LEFT_PARENTHESIS   &none  &kp LS(LEFT_BRACE)  &kp LBKT         &kp RA(UNDERSCORE)  &kp MINUS   &kp PLUS   &kp PRCNT  &kp DOUBLE_QUOTES  &kp DELETE
-&none  &kp RA(W)       &kp RIGHT_PARENTHESIS  &none  &kp PIPE            &kp SQT          &kp N0              &kp STAR    &kp HASH   &kp DLLR   &kp AMPS        &kp GRAVE
-&none  &kp KP_DIVIDE   &kp RA(UNDERSCORE)     &none  &kp RBRC            &none            &kp EQUAL           &kp AT      &kp EXCL   &kp RA(W)  &kp UNDERSCORE  &kp AMPS
+&none  &kp LEFT_BRACE  &kp LEFT_PARENTHESIS   &kp RIGHT_BRACKET      &kp RIGHT_BRACE  &kp TILDE               &kp GRAVE  &kp MINUS   &kp PLUS   &kp PRCNT  &kp SQT               &none
+&none  &kp LBKT        &kp RIGHT_PARENTHESIS  &kp BSLH               &kp PIPE         &kp DOUBLE_QUOTES       &kp N0     &kp STAR    &kp HASH   &kp DLLR   &kp LEFT_BRACKET      &none
+&none  &kp RBKT        &none                  &none                  &kp AMPS         &kp UNDERSCORE          &kp EQUAL  &kp AT      &kp EXCL   &kp RA(W)  &kp NON_US_BACKSLASH  &none
         >;
       };
 
       fn_layer {
         display-name = "FN";
         bindings = <
-&none  &kp F10  &kp F9  &kp F8  &kp F7  &none           &none  &none  &none  &none  &none  &none
-&none  &kp F11  &kp F6  &kp F5  &kp F4  &none           &none  &none  &none  &none  &none  &none
-&none  &kp F12  &kp F3  &kp F2  &kp F1  &none           &none  &none  &none  &none  &none  &none
+&none  &kp F10  &kp F9  &kp F8  &kp F7  &none         &none  &none  &none  &none  &none  &none  
+&none  &kp F11  &kp F6  &kp F5  &kp F4  &none         &none  &none  &none  &none  &none  &none  
+&none  &kp F12  &kp F3  &kp F2  &kp F1  &none         &none  &none  &none  &none  &none  &none  
         >;
       };
 
